@@ -10,4 +10,5 @@ import Foundation
 enum ReminderCategory: String, CaseIterable {
     case Completed
     case NextWeek
+    case All
 }

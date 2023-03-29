@@ -17,7 +17,8 @@ class ReminderCategoryCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        backgroundColor = .lightGray
+        contentView.clipsToBounds = true
         layer.cornerRadius = 10
         setupSubviews()
         applyConstraints()
@@ -46,7 +47,7 @@ class ReminderCategoryCell: UICollectionViewCell {
         titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.5)
+            make.width.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.5)
         }
         
@@ -54,22 +55,28 @@ class ReminderCategoryCell: UICollectionViewCell {
             make.leading.equalTo(imageView.snp.trailing).offset(5)
             make.trailing.equalToSuperview()
             make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.height.equalToSuperview().multipliedBy(0.5)
         }
     }
     
     // MARK: - Public
     
-    func configure(with category: ReminderCategory, remindersInCategory: Int) {
-        titleLabel.text = category.rawValue
-        amountLabel.text = String(remindersInCategory)
-        switch category {
-//        case .All:
-//            imageView.image = UIImage(systemName: "square.and.pencil")
-        case .Completed:
-            imageView.image = UIImage(systemName: "folder.fill")    
-        case .NextWeek:
+    func configure(with reminders: [Reminder], for index: Int) {
+        switch index {
+        case 0:
+            titleLabel.text = "All"
+            amountLabel.text = String(reminders.count)
+            imageView.image = UIImage(systemName: "square.and.pencil")
+        case 1:
+            titleLabel.text = "Next Week"
+            amountLabel.text = String(reminders.count)
+            imageView.image = UIImage(systemName: "folder.fill")
+        case 2:
+            titleLabel.text = "Completed"
+            amountLabel.text = String(reminders.count)
             imageView.image = UIImage(systemName: "tray.full")
+        default:
+            return
         }
     }
 }
@@ -83,11 +90,14 @@ private extension ReminderCategoryCell {
     
     var _titleLabel: UILabel {
         let result = UILabel()
+        result.font = UIFont(name: "AmericanTypewriter-Bold", size: 20)
         return result
     }
     
     var _amountLabel: UILabel {
         let result = UILabel()
+        result.textAlignment = .center
+        result.font = UIFont(name: "AmericanTypewriter-Bold", size: 36)
         return result
     }
 }

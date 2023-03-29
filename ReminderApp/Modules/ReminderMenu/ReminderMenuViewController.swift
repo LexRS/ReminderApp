@@ -11,7 +11,7 @@ import SnapKit
 class ReminderMenuViewController: UIViewController {
     var presenter: ReminderMenuViewToPresenterProtocol?
     
-    var reminders: [ReminderCategory: [Reminder]] = [:]
+    var reminders: [Reminder] = []
     
     private lazy var searchBar: UISearchBar = _searchBar
     private lazy var layout: UICollectionViewFlowLayout = _collectionViewFlowLayout
@@ -34,7 +34,7 @@ class ReminderMenuViewController: UIViewController {
         collectionView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.height.equalToSuperview().multipliedBy(0.2)
+            make.height.equalToSuperview().multipliedBy(0.4)
         }
         addReminderButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(15)
@@ -52,7 +52,7 @@ class ReminderMenuViewController: UIViewController {
 }
 
 extension ReminderMenuViewController: ReminderMenuPresenterToViewProtocol {
-    func showReminders(_ reminders: [ReminderCategory: [Reminder]]) {
+    func showReminders(_ reminders: [Reminder]) {
         self.reminders = reminders
     }
     
@@ -67,15 +67,12 @@ extension ReminderMenuViewController: UICollectionViewDelegate {
 
 extension ReminderMenuViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return reminders.keys.count
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReminderCategoryCell.reuseId, for: indexPath) as! ReminderCategoryCell
-        
-        let index = reminders.index(reminders.startIndex, offsetBy: indexPath.row)
-        cell.configure(with: reminders.keys[index],
-                       remindersInCategory: reminders[reminders.keys[index]]!.count)
+        cell.configure(with: reminders, for: indexPath.row)
         return cell
     }
     
@@ -92,7 +89,8 @@ private extension ReminderMenuViewController {
     var _collectionViewFlowLayout: UICollectionViewFlowLayout {
         let result = UICollectionViewFlowLayout()
         result.scrollDirection = .horizontal
-        result.minimumInteritemSpacing = (UIScreen.main.bounds.width * 0.4) / 2
+        result.itemSize = CGSize(width: view.frame.width / 2, height: view.frame.height * 0.2)
+        result.minimumLineSpacing = 5
         return result
     }
     

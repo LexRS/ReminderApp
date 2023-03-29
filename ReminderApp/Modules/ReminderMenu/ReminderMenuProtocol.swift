@@ -19,7 +19,7 @@ protocol ReminderMenuViewToPresenterProtocol: AnyObject {
 
 protocol ReminderMenuPresenterToViewProtocol: AnyObject {
     var presenter: ReminderMenuViewToPresenterProtocol? { get set }
-    func showReminders(_ reminders: [ReminderCategory: [Reminder]])
+    func showReminders(_ reminders: [Reminder])
     func showError()
 }
 

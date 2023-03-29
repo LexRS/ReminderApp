@@ -26,10 +26,7 @@ class ReminderMenuPresenter: ReminderMenuViewToPresenterProtocol {
 
 extension ReminderMenuPresenter: ReminderMenuInteractorToPresenterProtocol {
     func remindersFetchedSuccess(_ reminders: [Reminder]) {
-        var remindersSorted = Dictionary(grouping: reminders) { reminder in
-            reminder.category
-        }
-        view?.showReminders(remindersSorted)
+        view?.showReminders(reminders)
     }
     
     func remindersFetchedFailed() {
