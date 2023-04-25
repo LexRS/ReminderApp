@@ -25,7 +25,9 @@ class MoreOptionsViewController: UIViewController {
     }
     
     private func applyConstraints() {
-        
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     } 
     
     // MARK: - Actions
@@ -57,8 +59,18 @@ extension MoreOptionsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //guard let cell = tab
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: DateTimeTableViewCell.reuseId) as! DateTimeTableViewCell
+        cell.delegate = self
+        cell.configure(for: indexPath.row)
+        return cell
+    }
+}
+
+// MARK: - DateTimeTableViewCellDelegate
+
+extension MoreOptionsViewController: DateTimeTableViewCellDelegate {
+    func datePickedInCell(date: Date) {
+        //
     }
 }
 
@@ -67,6 +79,7 @@ extension MoreOptionsViewController: UITableViewDataSource {
 private extension MoreOptionsViewController {
     var _tableView: UITableView {
         let result = UITableView(frame: .zero, style: .insetGrouped)
+        result.register(DateTimeTableViewCell.self, forCellReuseIdentifier: DateTimeTableViewCell.reuseId)
         result.delegate = self
         result.dataSource = self
         return result

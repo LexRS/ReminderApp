@@ -9,12 +9,13 @@ import Foundation
 import UIKit
 
 struct Reminder {
+    var uuid = UUID().uuidString
     var title: String?
     var notes: String?
-    var category: ReminderCategory = .NextWeek
+    var category: ReminderCategory = .All
 //    var userGroup: UserGroup?
-//    var reminder: Date?
-//    var isCompleted: Bool? = false
+    var reminder: Date? = nil
+    var isCompleted: Bool? = nil
 }
 
 struct UserGroup {

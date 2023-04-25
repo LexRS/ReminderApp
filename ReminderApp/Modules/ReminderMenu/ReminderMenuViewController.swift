@@ -62,7 +62,20 @@ extension ReminderMenuViewController: ReminderMenuPresenterToViewProtocol {
 }
 
 extension ReminderMenuViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        var remindersToShow = [Reminder]()
+        switch indexPath.row {
+        case 0:
+            remindersToShow = reminders.filter({ $0.category == .All })
+        case 1:
+            remindersToShow = reminders.filter({ $0.category == .NextWeek })
+        case 2:
+            remindersToShow = reminders.filter({ $0.category == .Completed })
+        default:
+            return
+        }
+        presenter?.showReminderList(reminders: remindersToShow)
+    }
 }
 
 extension ReminderMenuViewController: UICollectionViewDataSource {
@@ -72,7 +85,18 @@ extension ReminderMenuViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReminderCategoryCell.reuseId, for: indexPath) as! ReminderCategoryCell
-        cell.configure(with: reminders, for: indexPath.row)
+        var remindersToShow = [Reminder]()
+        switch indexPath.row {
+        case 0:
+            remindersToShow = reminders.filter({ $0.category == .All })
+        case 1:
+            remindersToShow = reminders.filter({ $0.category == .NextWeek })
+        case 2:
+            remindersToShow = reminders.filter({ $0.category == .Completed })
+        default:
+            return cell
+        }
+        cell.configure(with: remindersToShow, for: indexPath.row)
         return cell
     }
     
@@ -91,6 +115,7 @@ private extension ReminderMenuViewController {
         result.scrollDirection = .horizontal
         result.itemSize = CGSize(width: view.frame.width / 2, height: view.frame.height * 0.2)
         result.minimumLineSpacing = 5
+        // result.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 2, right: 2)
         return result
     }
     

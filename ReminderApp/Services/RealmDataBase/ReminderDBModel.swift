@@ -9,11 +9,13 @@ import Foundation
 import RealmSwift
 
 class ReminderObject: Object {
+    @objc dynamic var id = ""
     @objc dynamic var title = ""
     @objc dynamic var notes = ""
+    //@objc dynamic var date: Date? = nil
     
     override class func primaryKey() -> String? {
-        return "title"
+        return "id"
     }
 }
 

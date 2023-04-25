@@ -15,6 +15,7 @@ protocol ReminderMenuViewToPresenterProtocol: AnyObject {
     
     func fetchReminders()
     func showReminderDetail(reminder: Reminder?)
+    func showReminderList(reminders: [Reminder])
 }
 
 protocol ReminderMenuPresenterToViewProtocol: AnyObject {
@@ -26,6 +27,7 @@ protocol ReminderMenuPresenterToViewProtocol: AnyObject {
 protocol ReminderMenuPresenterToRouterProtocol: AnyObject {
     func createModule() -> UIViewController
     func showReminderDetail(_ reminder: Reminder?)
+    func showRemindersList(reminders: [Reminder])
 }
 
 protocol ReminderMenuPresenterToInteractorProtocol: AnyObject {

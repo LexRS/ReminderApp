@@ -10,6 +10,7 @@ import RealmSwift
 
 protocol RealmService: AnyObject {
     func save(_ reminder: Reminder?)
+    func delete(_ reminder: Reminder?)
     func fetchReminders() -> [Reminder]?
 }
 
@@ -29,24 +30,41 @@ class RealmServiceImpl: RealmService {
             let realm = try Realm()
             var object: ReminderObject
             if let objectMaybe = realm.objects(ReminderObject.self)
-                .filter("title == %@ && notes == %@", title, notes)
+                .filter("id == %@", reminder.uuid)
                 .first {
                 object = objectMaybe
                 try realm.write({
-                    object.title = reminder.title!
-                    object.notes = reminder.notes!
+                    object.title = title
+                    object.notes = notes
                 })
             }
             else {
                 object = ReminderObject()
                 try realm.write({
-                    object.title = reminder.title!
-                    object.notes = reminder.notes!
+                    object.id = reminder.uuid
+                    object.title = title
+                    object.notes = notes
                 })
             }
             try realm.write({
                 realm.add(object)
             })
+        } catch {
+            print(error)
+        }
+    }
+    
+    func delete(_ reminder: Reminder?) {
+        guard let reminder = reminder else {
+            return
+        }
+        do {
+            let realm = try Realm()
+            if let objectMaybe = realm.objects(ReminderObject.self)
+                .filter("id == %@", reminder.uuid)
+                .first {
+                    realm.delete(objectMaybe)
+                }
         } catch {
             print(error)
         }

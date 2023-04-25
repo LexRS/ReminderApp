@@ -22,6 +22,10 @@ class ReminderMenuPresenter: ReminderMenuViewToPresenterProtocol {
     func showReminderDetail(reminder: Reminder?) {
         router?.showReminderDetail(reminder)
     }
+    
+    func showReminderList(reminders: [Reminder]) {
+        router?.showRemindersList(reminders: reminders)
+    }
 }
 
 extension ReminderMenuPresenter: ReminderMenuInteractorToPresenterProtocol {

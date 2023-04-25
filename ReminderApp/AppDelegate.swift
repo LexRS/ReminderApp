@@ -18,8 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         root = RootRouter()
         window = root?.entry()
         self.window?.makeKeyAndVisible()
-        
-        //Some new code
        
         return true
     }

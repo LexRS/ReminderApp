@@ -12,6 +12,7 @@ import Swinject
 class ReminderMenuRouter: BaseRouter, ReminderMenuPresenterToRouterProtocol {
     
     var reminderDetailModule: ReminderDetailRouter?
+    var remindersListModule: RemindersListRouter?
     
     let container: Container
     
@@ -63,12 +64,31 @@ class ReminderMenuRouter: BaseRouter, ReminderMenuPresenterToRouterProtocol {
         }
         presentModalScreen(viewController, animated: true)
     }
+    
+    func showRemindersList(reminders: [Reminder]) {
+        let remindersList = RemindersListRouter(reminders: reminders)
+        remindersListModule = remindersList
+        remindersListModule?.delegate = self
+        let viewController = remindersListModule?.createModule()
+        guard let viewController = viewController else {
+            return
+        }
+        pushScreen(viewController)
+    }
 }
 
 extension ReminderMenuRouter: ReminderDetailRouterDelegate {
     func reminderDetailModuleShouldDismiss(_ module: ReminderDetailRouter) {
         dismissChildModule {
             self.reminderDetailModule = nil
+        }
+    }
+}
+
+extension ReminderMenuRouter: RemindersListRouterDelegate {
+    func remindersListModuleShouldDismiss(_ module: RemindersListRouter) {
+        dismissChildModule {
+            self.remindersListModule = nil
         }
     }
 }
